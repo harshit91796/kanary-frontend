@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 import { Dropdown } from "./components/DropDown";
 import LogTable from "./components/LogTable";
 
-import Datepickerr from "./components/datapicker";
+import Datepickerr from "./components/Datapicker";
 import { useEffect, useState } from "react";
 import { getLogs, logout, deleteLogs, exportLogs } from "@/services";
 import { useRouter } from 'next/router';
