@@ -3,15 +3,15 @@
 
 import { Inter } from "next/font/google";
 
-import { Dropdown } from "./components/DropDown";
-import LogTable from "./components/LogTable";
+import { Dropdown } from "../components/DropDown";
+import LogTable from "../components/LogTable";
 
-import Datepickerr from "./components/Datapicker";
+import Datepickerr from "../components/Datapicker";
 import { useEffect, useState } from "react";
 import { getLogs, logout, deleteLogs, exportLogs } from "@/services";
 import { useRouter } from 'next/router';
 import { Close } from "@mui/icons-material";
-import Modal from "./components/Modal"; // You'll need to create this component
+import Modal from "../components/Modal"; // You'll need to create this component
 
 const inter = Inter({ subsets: ["latin"] });
 
