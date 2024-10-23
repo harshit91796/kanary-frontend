@@ -1,107 +1,117 @@
 import axios from 'axios';
 
-const api='http://localhost:3007'
+const API_BASE_URL = 'http://localhost:3007';
 
-const getHeaders = () => {
-  const token = sessionStorage.getItem('token');
-  return {
-    'Authorization': `Bearer ${token}`,
+// Axios instance with default config
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
     'Content-Type': 'application/json',
-  };
-};
+  },
+});
 
-const getRequest = async (endpoint, params) => {
-  try {
-    const response = await axios.get(`${api}${endpoint}`, {
-      params,
-      headers: getHeaders()
-    });
-    return response;
-  } catch (error) {
-    console.error('Error in getRequest:', error);
-    throw error;
+// request interceptor to include the token in every request
+api.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
-};
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-const deleteRequest = async (endpoint) => {
+// Generic API call functions
+const apiCall = async (method, endpoint, data = null, params = null) => {
   try {
-    const response = await axios.delete(`${api}${endpoint}`, {
-      headers: getHeaders()
-    });
-    return response;
-  } catch (error) {
-    console.error('Error in deleteRequest:', error);
-    throw error;
-  }
-}
+    const config = { method, url: endpoint };
+    if (data) config.data = data;
+    if (params) config.params = params;
 
-const postRequest = async (endpoint, data) => {
-  try {
-    const response = await axios.post(`${api}${endpoint}`, data, {
-      headers: getHeaders()
-    });
-    return response;
-  } catch (error) {
-    console.error('Error in postRequest:', error);
-    throw error;
-  }
-};
-
-export const getLogs = async (data) => {
-    try {
-        const response = await getRequest(`/api/logs`, data);
-        return response.data;
-    } catch (error) {
-      if (error.response && error.response.status === 500) {
-        // Redirect to login page
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
-      }
-        throw error;
-    }
-}
-
-export const login = async (data) => {
-  try {
-    const response = await postRequest('/api/users/login', data);
-    // if (response.data && response.data.token) {
-    //   sessionStorage.setItem('token', response.data.token);
-    // }
-    console.log("response", response);
+    const response = await api(config);
     return response.data;
-    // console.log("response", response);
-    // return response.data;
+  } catch (error) {
+    console.error(`Error in ${method} request:`, error);
+    if (error.response && error.response.status === 401) {
+      // Redirect to login page on unauthorized access
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+    }
+    throw error;
+  }
+};
+
+// API functions
+export const getLogs = (params) => apiCall('get', '/api/logs', null, params);
+
+export const login = async (credentials) => {
+  try {
+    const response = await apiCall('post', '/api/users/login', credentials);
+    return response;
   } catch (error) {
     if (error.response && error.response.status === 401) {
       return { error: 'Invalid credentials. Please try again.' };
     }
     return { error: 'An error occurred. Please try again.' };
   }
-}
+};
 
-export const logout = async () => {
+export const logout = () => apiCall('post', '/api/users/logout');
+
+export const deleteLogs = (id) => apiCall('delete', `/api/logs/${id}`);
+
+export const signup = (data) => apiCall('post', '/api/users/signup', data);
+
+// New function to export logs
+export const exportLogs = async (format = 'csv') => {
   try {
-    
-    const response = await postRequest('/api/users/logout');
+    const response = await api.get(`/api/logs/export?format=${format}`, {
+      responseType: 'blob', 
+    });
 
-    return response;
+    const blob = new Blob([response.data], {
+      type: format === 'csv' ? 'text/csv' : 'application/json',
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `logs.${format}`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
   } catch (error) {
-    console.error('Error in logout:', error);
+    console.error('Error exporting logs:', error);
     throw error;
   }
-}
+};
 
-export const deleteLogs = async(id)=>{
-  try {
-    const response = await deleteRequest(`/api/logs/${id}`);
-    return response;
-  } catch (error) {
-    console.error('Error in deleteLogs:', error);
-    throw error;
+// Error handler for common errors
+const handleCommonErrors = (error) => {
+  if (error.response) {
+    switch (error.response.status) {
+      case 401:
+        // Handle unauthorized access
+        break;
+      case 403:
+        // Handle forbidden access
+        break;
+      case 404:
+        // Handle not found
+        break;
+      case 500:
+        // Handle server error
+        break;
+      default:
+        // Handle other errors
+    }
+  } else if (error.request) {
+    // Handle network errors
+  } else {
+    // Handle other errors
   }
-}
+};
 
-export const signup=(data)=>{
-    return postRequest('/api/users/signup', data)
-}
+
+export { handleCommonErrors };

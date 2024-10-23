@@ -18,7 +18,6 @@ const Login = () => {
 
     if (response.error) {
       setError(response.error);
-      router.push("/signup")
     } else if (response && response.token) {
       sessionStorage.setItem("token", response.token);
       sessionStorage.setItem("name", response.name);
@@ -30,75 +29,55 @@ const Login = () => {
     }
   };
 
-  // {
-  //     "_id": "6717a8e1ca6a6f18c21736cf",
-  //     "name": "Test User 1",
-  //     "email": "testuser1@example.com",
-  //     "role": "user",
-  //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTdhOGUxY2E2YTZmMThjMjE3MzZjZiIsImlhdCI6MTcyOTYwMzgwOSwiZXhwIjoxNzI5NjA3NDA5fQ.9wc8imgJ2GyGabco6JS9kCOqhJG_RT326yFAPqQHBQE"
-  //   }
-
   return (
-    <div className="min-h-screen bg-transparent flex items-center justify-center">
-      <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
+    <div className="min-h-screen bg-[#b4d2a6] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold text-[#407165] mb-6 text-center">
           Login to your account
         </h2>
 
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit} method="POST">
-          <div className="mb-4">
-            <label
-              for="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+        <form onSubmit={handleSubmit} method="POST" className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-[#407165]">
               Email address
             </label>
             <input
               type="email"
               id="email"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700"
+              className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
               placeholder="you@example.com"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              for="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-[#407165]">
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700"
+              className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
               placeholder="********"
               required
             />
           </div>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
                 id="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                className="h-4 w-4 text-[#407165] focus:ring-[#407165] border-[#b4d2a6] rounded"
               />
-              <label
-                for="remember-me"
-                className="ml-2 block text-sm text-gray-900"
-              >
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-[#407165]">
                 Remember me
               </label>
             </div>
             <div className="text-sm">
-              <Link
-                href="/signup"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
+              <Link href="/forgot-password" className="font-medium text-[#407165] hover:text-[#305753]">
                 Forgot your password?
               </Link>
             </div>
@@ -106,18 +85,15 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full bg-[#407165] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#305753] focus:outline-none focus:ring-2 focus:ring-[#407165] focus:ring-offset-2 transition duration-300"
           >
             Sign in
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-6 text-center text-sm text-[#407165]">
           Don't have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-indigo-600 hover:text-indigo-500 font-medium"
-          >
+          <Link href="/signup" className="font-medium text-[#407165] hover:text-[#305753]">
             Sign up
           </Link>
         </div>
