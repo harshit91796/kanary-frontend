@@ -171,7 +171,7 @@ export default function Home() {
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)} 
             placeholder="Search by userName, logId, userId" 
-            className="flex-grow w-[200px] md:w-auto px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#407165]" 
+            className="flex-grow bg-[#1F2937] w-[200px] md:w-auto px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#407165]" 
           />
           {searchTerm && (
             <button onClick={() => setSearchTerm('')} className="px-2 py-2 text-[#407165]">

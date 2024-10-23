@@ -35,7 +35,7 @@ const LogTable = ({ logs, currentPage, totalPages, onPageChange, onDeleteLog, on
                   {log.additionalData && (
                     <button 
                     onClick={() => onViewDetails(log)}
-                    className="text-blue-500 hover:text-blue-700 mr-2"
+                    className="text-[#407165] font-bold hover:text-[#305753] mr-2"
                   >
                     View
                   </button>

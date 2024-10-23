@@ -2,10 +2,12 @@ import { login } from "@/services";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +29,10 @@ const Login = () => {
     } else {
       setError('Login failed. Please check your credentials.');
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -56,13 +62,22 @@ const Login = () => {
             <label htmlFor="password" className="block text-sm font-medium text-[#407165]">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
-              placeholder="********"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
+                placeholder="********"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              >
+                {showPassword ? <FaEyeSlash className="text-[#407165]" /> : <FaEye className="text-[#407165]" />}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-between">

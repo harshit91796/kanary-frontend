@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3007';
+const API_BASE_URL = 'https://jagged-bustling-college.glitch.me';
 
 // Axios instance with default config
 const api = axios.create({

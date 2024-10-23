@@ -2,10 +2,12 @@ import { signup } from "@/services";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Signup = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,12 +19,16 @@ const Signup = () => {
         gender: e.target.gender.value,
         age: e.target.age.value,
       });
-      if (response.status === 201) {
+      if (response.token) {
         router.push("/login");
       }
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred during signup.');
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -78,13 +84,22 @@ const Signup = () => {
             <label htmlFor="password" className="block text-sm font-medium text-[#407165]">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
-              placeholder="********"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                className="mt-1 block w-full px-4 py-2 border border-[#b4d2a6] rounded-md shadow-sm focus:ring-[#407165] focus:border-[#407165] text-gray-700"
+                placeholder="********"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              >
+                {showPassword ? <FaEyeSlash className="text-[#407165]" /> : <FaEye className="text-[#407165]" />}
+              </button>
+            </div>
           </div>
 
           <div>
@@ -129,7 +144,7 @@ const Signup = () => {
         <div className="mt-6 text-center text-sm text-[#407165]">
           Already have an account?{" "}
           <Link href="/login" className="font-medium text-[#407165] hover:text-[#305753]">
-            Sign in
+            Login
           </Link>
         </div>
       </div>
