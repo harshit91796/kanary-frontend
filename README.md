@@ -1,38 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Kanary Log Management System
 
-## Getting Started
+## Description
+Kanary is a log management system that allows users to view, filter, and export logs. It provides a user-friendly interface for managing and analyzing log data.
 
-First, run the development server:
+## Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/kanary-frontend.git
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
+   ```
+   cd kanary-frontend
+   ```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+3. Install dependencies:
+   ```
+   npm install
+   ```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+4. Create a `.env.local` file in the root directory and add your environment variables:
+   ```
+   NEXT_PUBLIC_API_URL=your_backend_api_url
+   ```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+5. Run the development server:
+   ```
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features
 
-## Learn More
+- User authentication (login/signup)
+- View logs in a tabular format
+- Filter logs by action type, date range, and search term
+- Export logs to CSV or JSON format
+- Pagination for log results
+- Responsive design for mobile and desktop
 
-To learn more about Next.js, take a look at the following resources:
+## Main Components and Functions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. `pages/index.js`: Main dashboard
+   - `handleLogout()`: Logs out the user
+   - `handleSearch()`: Filters logs based on search term
+   - `handleExport()`: Exports logs to CSV or JSON
+   - `handlePageChange()`: Changes the current page of logs
+   - `handleDeleteLog()`: Deletes a specific log
+   - `handleViewDetails()`: Opens a modal with detailed log information
 
-## Deploy on Vercel
+2. `pages/login/index.js`: Login page
+   - `handleSubmit()`: Handles user login
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. `pages/signup/index.js`: Signup page
+   - `handleSubmit()`: Handles user registration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Components
+
+1. `components/LogTable.jsx`: Displays logs in a table format
+   - Props: `logs`, `currentPage`, `totalPages`, `onPageChange`, `onDeleteLog`, `onViewDetails`
+
+2. `components/Dropdown.jsx`: Dropdown for selecting action type filter
+   - Props: `value`, `setType`
+
+3. `components/Datapicker.jsx`: Date picker for selecting date range
+   - Props: `value`, `setdate`, `dateType`
+
+4. `components/Modal.jsx`: Modal for displaying detailed log information
+   - Props: `isOpen`, `onClose`, `children`
+
+### Services
+
+`services.js`: Contains API call functions
+- `getLogs()`: Fetches logs from the backend
+- `login()`: Handles user login
+- `logout()`: Handles user logout
+- `deleteLogs()`: Deletes a specific log
+- `signup()`: Handles user registration
+- `exportLogs()`: Exports logs to CSV or JSON format
+
+## Technologies Used
+
+- Next.js
+- React
+- Tailwind CSS
+- Axios for API calls
+- React Icons
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
